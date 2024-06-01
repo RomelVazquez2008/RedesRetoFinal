@@ -1,0 +1,128 @@
+enable
+configure terminal
+
+hostname SITE1
+
+!Configure el registro sincrónico para la línea de la consola
+line console 0
+logging synchronous
+exit
+
+banner motd #¡Advertencia! Solo personal autorizado.#
+
+!Contraseña en modo privilegiado
+enable secret PRIVTEC123
+
+!Contraseña de consola
+line console 0
+password CONTEC123
+login
+exit
+
+!Contraseña para acceso remoto
+line vty 0 15
+password REMTEC123
+login
+exit
+
+!Todas las contraseñas deben estar encriptadas
+service password-encryption
+
+!Nombrar VLANS
+vlan 10
+name Administracion
+exit
+vlan 20
+name Tecnologia
+exit
+vlan 30
+name Servers
+exit
+vlan 40
+name Manufactura-Maestra
+exit
+vlan 50
+name Manufactura-Garcia
+exit
+vlan 60
+name Manufactura-Pesqueria
+exit
+vlan 100
+name Red
+exit
+
+!Configurar interfaces
+
+interface Gig1/0/1
+no switchport
+ip address 192.168.100.1 255.255.255.252
+no shutdown
+exit
+
+interface Gig1/0/2
+no switchport
+ip address 192.168.100.9 255.255.255.252
+no shutdown
+exit
+
+!Checar si esto jala con la redundancia 
+interface Gig1/0/3
+no switchport
+ip address 192.168.100.17 255.255.255.252
+no shutdown
+exit
+
+interface Gig1/0/4
+no switchport
+ip address 192.168.100.25 255.255.255.252
+no shutdown
+exit
+
+interface Gig1/0/5
+no switchport
+ip address 192.168.100.33 255.255.255.252
+no shutdown
+exit
+
+interface Gig1/0/6
+no switchport
+ip address 192.168.100.41 255.255.255.252
+no shutdown
+exit
+
+interface Gig1/0/24
+no switchport
+ip address 192.168.100.49 255.255.255.252
+no shutdown
+exit
+
+!Enable Routers
+ip routing
+
+!interface vlan 100
+!ip address 192.168.100.2 255.255.255.0
+!no shutdown
+!exit
+
+
+!Configure OSPF
+router ospf 1
+network 192.168.100.0 0.0.0.3 area 0
+network 192.168.100.8 0.0.0.3 area 0
+network 192.168.100.16 0.0.0.3 area 0
+network 192.168.100.24 0.0.0.3 area 0
+network 192.168.100.32 0.0.0.3 area 0
+network 192.168.100.40 0.0.0.3 area 0
+network 192.168.100.48 0.0.0.3 area 0
+exit
+
+!Save mem
+exit
+write memory
+
+
+!(Optional) Verify COnfiguration
+show vlan brief
+show ip route
+show interfaces trunk
+show running-config
