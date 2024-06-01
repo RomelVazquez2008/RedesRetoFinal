@@ -1,0 +1,71 @@
+enable
+configure terminal
+
+
+! Configurar contraseña enable
+enable password FW123
+hostname FWBorregoAzul
+
+!Configuración de las interfaces
+interface Gig1/1
+ nameif outside1
+ security-level 0
+ ip address 203.0.113.1 255.255.255.252
+ no shutdown
+
+interface Gig1/2
+ nameif outside2
+ security-level 0
+ ip address 198.51.100.1 255.255.255.252
+ no shutdown
+
+interface Gig1/3
+ nameif inside1
+ security-level 100
+ ip address 192.168.100.50 255.255.255.252
+ no shutdown
+
+interface Gig1/4
+ nameif inside2
+ security-level 100
+ ip address 192.168.100.54 255.255.255.252
+ no shutdown
+
+exit
+
+!Configurar rutas estáticas
+route outside1 0.0.0.0 0.0.0.0 203.0.113.2
+route outside2 0.0.0.0 0.0.0.0 198.51.100.2
+
+
+!Configuracion de la NAT
+object network obj_any
+subnet 0.0.0.0 0.0.0.0
+nat (inside1,outside1) dynamic interface
+nat (inside1,outside2) dynamic interface
+nat (inside2,outside1) dynamic interface
+nat (inside2,outside2) dynamic interface
+
+!Configurar la lista de Acceso
+access-list outside_access_in extended permit tcp any host 203.0.113.1 eq 80
+access-list outside_access_in extended permit tcp any host 198.51.100.1 eq 80
+access-list outside_access_in extended deny ip any any
+
+! Aplicar ACLs a las interfaces externas
+access-group outside_access_in in interface outside1
+access-group outside_access_in in interface outside2
+
+! Configurar inspección de tráfico
+policy-map global
+ class inspection_default
+  inspect ftp
+  inspect http
+  inspect icmp
+  inspect dns
+  inspect h323
+  inspect tftp
+
+service-policy global_policy global
+
+! Guardar la configuración
+write memory
