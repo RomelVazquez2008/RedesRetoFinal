@@ -107,7 +107,7 @@ exit
 
 interface Gig1/0/24
 no switchport
-ip address 192.168.100.53 255.255.255.252
+ip address 192.168.100.50 255.255.255.248
 no shutdown
 exit
 
@@ -128,8 +128,18 @@ network 192.168.100.20 0.0.0.3 area 0
 network 192.168.100.28 0.0.0.3 area 0
 network 192.168.100.36 0.0.0.3 area 0
 network 192.168.100.44 0.0.0.3 area 0
-network 192.168.100.52 0.0.0.3 area 0
+network 192.168.100.48 0.0.0.7 area 0
 exit
+
+!Configuracion del HSRP
+interface GigabitEthernet1/0/24
+ip address 192.168.100.50 255.255.255.248
+standby 1 ip 192.168.100.51
+standby 1 priority 50
+standby 1 preempt
+standby 1 authentication md5 key-string TECHSRP123
+exit
+
 !Save mem
 exit
 write memory
