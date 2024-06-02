@@ -1,4 +1,5 @@
 enable
+FW123
 configure terminal
 
 

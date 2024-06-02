@@ -1,4 +1,6 @@
+CONTEC123
 enable
+PRIVTEC123
 configure terminal
 
 hostname EdificiodeTecnologia
@@ -116,6 +118,7 @@ exit
 !OSPF
 ROUTER OSPF 1
 network 192.168.20.0 0.0.0.255 area 0
+network 192.168.25.0 0.0.0.255 area 0
 network 192.168.100.8 0.0.0.3 area 0
 network 192.168.100.12 0.0.0.3 area 0
 exit

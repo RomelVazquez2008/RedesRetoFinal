@@ -1,4 +1,6 @@
+CONTEC123
 enable
+PRIVTEC123
 configure terminal
 
 hostname MG1
@@ -116,6 +118,7 @@ exit
 !OSPF
 ROUTER OSPF 1
 network 192.168.50.0 0.0.0.255 area 0
+network 192.168.55.0 0.0.0.255 area 0
 network 192.168.100.32 0.0.0.3 area 0
 network 192.168.100.36 0.0.0.3 area 0
 exit

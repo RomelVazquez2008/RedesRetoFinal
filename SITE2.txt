@@ -1,4 +1,6 @@
+CONTEC123
 enable
+PRIVTEC123
 configure terminal
 
 hostname SITE2
@@ -66,48 +68,65 @@ vlan 100
 name Red
 exit
 
+!Acces list
+!BLoquear puerto HTTP
+access-list 101 deny tcp any any eq 80
+!BLoquear puerto Telnet
+access-list 101 deny tcp any any eq 23
+access-list 101 permit icmp any any echo
+access-list 101 permit icmp any any echo-reply
+access-list 101 permit ip any any
+
+
 !Configurar interfaces
 
 interface Gig1/0/1
 no switchport
-ip address 192.168.100.5 255.255.255.252
+ip address 192.168.100.1 255.255.255.252
+ip access-group 101 IN
 no shutdown
 exit
 
 interface Gig1/0/2
 no switchport
-ip address 192.168.100.13 255.255.255.252
+ip address 192.168.100.9 255.255.255.252
+ip access-group 101 IN
 no shutdown
 exit
 
 !Checar si esto jala con la redundancia 
 interface Gig1/0/3
 no switchport
-ip address 192.168.100.21 255.255.255.252
+ip address 192.168.100.17 255.255.255.252
+ip access-group 101 in
 no shutdown
 exit
 
 interface Gig1/0/4
 no switchport
-ip address 192.168.100.29 255.255.255.252
+ip address 192.168.100.25 255.255.255.252
+ip access-group 101 in
 no shutdown
 exit
 
 interface Gig1/0/5
 no switchport
-ip address 192.168.100.37 255.255.255.252
+ip address 192.168.100.33 255.255.255.252
+ip access-group 101 in
 no shutdown
 exit
 
 interface Gig1/0/6
 no switchport
-ip address 192.168.100.45 255.255.255.252
+ip address 192.168.100.41 255.255.255.252
+ip access-group 101 in
 no shutdown
 exit
 
 interface Gig1/0/24
 no switchport
-ip address 192.168.100.50 255.255.255.248
+ip address 192.168.100.49 255.255.255.248
+ip access-group 101 in
 no shutdown
 exit
 

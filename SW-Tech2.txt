@@ -1,4 +1,6 @@
+CONTEC123
 enable
+PRIVTEC123
 configure terminal
 
 hostname SW-Tech2

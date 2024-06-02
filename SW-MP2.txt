@@ -1,7 +1,9 @@
+CONTEC123
 enable
+PRIVTEC123
 configure terminal
 
-hostname SW-MP1
+hostname SW-MP2
 
 !Configure el registro sincrónico para la línea de la consola
 line console 0
