@@ -32,8 +32,14 @@ service password-encryption
 vlan 10
 name Administracion
 exit
+vlan 15
+name Administracion-Invitados
+exit
 vlan 20
 name Tecnologia
+exit
+vlan 25
+name Tecnologia-Invitados
 exit
 vlan 30
 name Servers
@@ -41,11 +47,20 @@ exit
 vlan 40
 name Manufactura-Maestra
 exit
+vlan 45
+name Manufactura-IIOT
+exit
 vlan 50
 name Manufactura-Garcia
 exit
+vlan 55
+name Manufactura-Garcia-IIOT
+exit
 vlan 60
 name Manufactura-Pesqueria
+exit
+vlan 65
+name Manufactura-Pesqueria-IIOT
 exit
 vlan 100
 name Red
@@ -54,6 +69,12 @@ exit
 !Configure VLAN interface
 interface vlan 10
 ip address 192.168.10.1 255.255.255.0
+no shutdown
+exit
+
+
+interface vlan 15
+ip address 192.168.15.1 255.255.255.0
 no shutdown
 exit
 
@@ -66,14 +87,14 @@ ip routing
 interface Gig1/0/3
 switchport mode trunk
 switchport trunk encapsulation dot1q
-switchport trunk allowed vlan 10,20,30,40,50,60,100
+switchport trunk allowed vlan 10,15,20,25,30,40,45,50,55,60,65,100
 no shutdown
 exit
 
 interface Gig1/0/4
 switchport mode trunk
 switchport trunk encapsulation dot1q
-switchport trunk allowed vlan 10,20,30,40,50,60,100
+switchport trunk allowed vlan 10,15,20,25,30,40,45,50,55,60,65,100
 no shutdown
 exit
 
@@ -101,6 +122,7 @@ network 192.168.100.4 0.0.0.3 area 0
 exit
 
 !DCHP
+!DHCP .10
 !Exluir primera 5 direcciones
 ip dhcp excluded-address 192.168.10.1 192.168.10.10
 
@@ -109,6 +131,17 @@ ip dhcp pool INTEGRA
 
 network 192.168.10.0 255.255.255.0
 default-router 192.168.10.1
+dns-server 192.168.30.2
+exit
+
+!DHCP .15
+ip dhcp excluded-address 192.168.15.1 192.168.15.10
+
+!Crear el pool DHCP 
+ip dhcp pool INTEGRA2
+
+network 192.168.15.0 255.255.255.0
+default-router 192.168.15.1
 dns-server 192.168.30.2
 
 !Save config

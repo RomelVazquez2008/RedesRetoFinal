@@ -32,8 +32,14 @@ service password-encryption
 vlan 10
 name Administracion
 exit
+vlan 15
+name Administracion-Invitados
+exit
 vlan 20
 name Tecnologia
+exit
+vlan 25
+name Tecnologia-Invitados
 exit
 vlan 30
 name Servers
@@ -41,11 +47,20 @@ exit
 vlan 40
 name Manufactura-Maestra
 exit
+vlan 45
+name Manufactura-IIOT
+exit
 vlan 50
 name Manufactura-Garcia
 exit
+vlan 55
+name Manufactura-Garcia-IIOT
+exit
 vlan 60
 name Manufactura-Pesqueria
+exit
+vlan 65
+name Manufactura-Pesqueria-IIOT
 exit
 vlan 100
 name Red

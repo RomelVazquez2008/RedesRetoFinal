@@ -32,8 +32,14 @@ service password-encryption
 vlan 10
 name Administracion
 exit
+vlan 15
+name Administracion-Invitados
+exit
 vlan 20
 name Tecnologia
+exit
+vlan 25
+name Tecnologia-Invitados
 exit
 vlan 30
 name Servers
@@ -41,19 +47,28 @@ exit
 vlan 40
 name Manufactura-Maestra
 exit
+vlan 45
+name Manufactura-IIOT
+exit
 vlan 50
 name Manufactura-Garcia
 exit
+vlan 55
+name Manufactura-Garcia-IIOT
+exit
 vlan 60
 name Manufactura-Pesqueria
+exit
+vlan 65
+name Manufactura-Pesqueria-IIOT
 exit
 vlan 100
 name Red
 exit
 
 !Asignar Ip para conectar via SSH
-interface vlan 10
-ip address 192.168.10.3 255.255.255.0
+interface vlan 15
+ip address 192.168.15.2 255.255.255.0
 no shutdown
 exit
 
@@ -71,13 +86,13 @@ exit
 ! Configurar las interfaces en modo trunk
 interface GigabitEthernet0/1
 switchport mode trunk
-switchport trunk allowed vlan 10,20,30,40,50,60,100
+switchport trunk allowed vlan 10,15,20,25,30,40,45,50,55,60,65,100
 no shutdown
 exit
 
 interface GigabitEthernet0/2
 switchport mode access
-switchport access vlan 10
+switchport access vlan 15
 no shutdown
 exit
 
