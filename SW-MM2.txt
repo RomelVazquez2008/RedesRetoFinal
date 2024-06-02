@@ -1,7 +1,7 @@
 enable
 configure terminal
 
-hostname SW-MM1
+hostname SW-MM2
 
 !Configure el registro sincrónico para la línea de la consola
 line console 0

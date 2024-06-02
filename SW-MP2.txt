@@ -1,0 +1,108 @@
+enable
+configure terminal
+
+hostname SW-MP1
+
+!Configure el registro sincrónico para la línea de la consola
+line console 0
+logging synchronous
+exit
+
+banner motd #¡Advertencia! Solo personal autorizado.#
+
+!Contraseña en modo privilegiado
+enable secret PRIVTEC123
+
+!Contraseña de consola
+line console 0
+password CONTEC123
+login
+exit
+
+!Contraseña para acceso remoto
+line vty 0 15
+password REMTEC123
+login
+exit
+
+!Todas las contraseñas deben estar encriptadas
+service password-encryption
+
+!Configure VLAN 
+vlan 10
+name Administracion
+exit
+vlan 15
+name Administracion-Invitados
+exit
+vlan 20
+name Tecnologia
+exit
+vlan 25
+name Tecnologia-Invitados
+exit
+vlan 30
+name Servers
+exit
+vlan 40
+name Manufactura-Maestra
+exit
+vlan 45
+name Manufactura-IIOT
+exit
+vlan 50
+name Manufactura-Garcia
+exit
+vlan 55
+name Manufactura-Garcia-IIOT
+exit
+vlan 60
+name Manufactura-Pesqueria
+exit
+vlan 65
+name Manufactura-Pesqueria-IIOT
+exit
+vlan 100
+name Red
+exit
+
+!Asignar Ip para conectar via SSH
+interface vlan 65
+ip address 192.168.65.2 255.255.255.0
+no shutdown
+exit
+
+!Domino, usuario y contraseña de la conexión
+ip domain-name tec.com
+crypto key generate rsa
+username admin privilege 15 secret REMTEC123
+
+!Permitir hasta 15 sesiones simultaneas y acceso via SSH
+line vty 0 15
+login local
+transport input ssh
+exit
+
+! Configurar las interfaces en modo trunk
+interface GigabitEthernet0/1
+switchport mode trunk
+switchport trunk allowed vlan 10,15,20,25,30,40,45,50,55,60,65,100
+no shutdown
+exit
+
+interface GigabitEthernet0/2
+switchport mode access
+switchport access vlan 65
+no shutdown
+exit
+
+
+!Save config
+exit
+write memory
+
+
+!(Optinal) View COnfiguration
+show running-config
+show vlan brief
+show ip interface brief
