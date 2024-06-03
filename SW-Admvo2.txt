@@ -1,6 +1,4 @@
-CONTEC123
 enable
-PRIVTEC123
 configure terminal
 
 hostname SW-Admvo2
@@ -21,10 +19,17 @@ password CONTEC123
 login
 exit
 
+ip domain-name BorregoAzul.com.mx
+crypto key generate rsa
+SW_Admvo2.BorregoAzul.com.mx
+1024
+username Admin privilege 15 secret REMTEC123
+
+
 !Contraseña para acceso remoto
 line vty 0 15
-password REMTEC123
-login
+transport input ssh
+login local
 exit
 
 !Todas las contraseñas deben estar encriptadas
@@ -74,16 +79,6 @@ ip address 192.168.15.2 255.255.255.0
 no shutdown
 exit
 
-!Domino, usuario y contraseña de la conexión
-ip domain-name tec.com
-crypto key generate rsa
-username admin privilege 15 secret REMTEC123
-
-!Permitir hasta 15 sesiones simultaneas y acceso via SSH
-line vty 0 15
-login local
-transport input ssh
-exit
 
 ! Configurar las interfaces en modo trunk
 interface GigabitEthernet0/1

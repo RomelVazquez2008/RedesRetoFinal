@@ -1,6 +1,4 @@
-CONTEC123
 enable
-PRIVTEC123
 configure terminal
 
 
@@ -23,14 +21,22 @@ password CONTEC123
 login
 exit
 
-!Contraseña para acceso remoto
-line vty 0 15
-password REMTEC123
-login
-exit
 
 !Todas las contraseñas deben estar encriptadas
 service password-encryption
+
+ip domain-name BorregoAzul.com.mx
+crypto key generate rsa
+SITE1.BorregoAzul.com.mx
+1024
+username Admin privilege 15 secret REMTEC123
+
+
+!Contraseña para acceso remoto
+line vty 0 15
+transport input ssh
+login local
+exit
 
 !Nombrar VLANS
 vlan 10
@@ -85,14 +91,14 @@ access-list 101 permit ip any any
 interface Gig1/0/1
 no switchport
 ip address 192.168.100.1 255.255.255.252
-ip access-group 101 out
+ip access-group 101 in
 no shutdown
 exit
 
 interface Gig1/0/2
 no switchport
 ip address 192.168.100.9 255.255.255.252
-ip access-group 101 out
+ip access-group 101 in
 no shutdown
 exit
 
@@ -100,28 +106,28 @@ exit
 interface Gig1/0/3
 no switchport
 ip address 192.168.100.17 255.255.255.252
-ip access-group 101 out
+ip access-group 101 in
 no shutdown
 exit
 
 interface Gig1/0/4
 no switchport
 ip address 192.168.100.25 255.255.255.252
-ip access-group 101 out
+ip access-group 101 in
 no shutdown
 exit
 
 interface Gig1/0/5
 no switchport
 ip address 192.168.100.33 255.255.255.252
-ip access-group 101 out
+ip access-group 101 in
 no shutdown
 exit
 
 interface Gig1/0/6
 no switchport
 ip address 192.168.100.41 255.255.255.252
-ip access-group 101 out
+ip access-group 101 in
 no shutdown
 exit
 

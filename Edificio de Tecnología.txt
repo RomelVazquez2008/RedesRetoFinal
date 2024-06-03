@@ -1,6 +1,4 @@
-CONTEC123
 enable
-PRIVTEC123
 configure terminal
 
 hostname EdificiodeTecnologia
@@ -21,10 +19,17 @@ password CONTEC123
 login
 exit
 
+ip domain-name BorregoAzul.com.mx
+crypto key generate rsa
+EdificiodeTecnologia.BorregoAzul.com.mx
+1024
+username Admin privilege 15 secret REMTEC123
+
+
 !Contraseña para acceso remoto
 line vty 0 15
-password REMTEC123
-login
+transport input ssh
+login local
 exit
 
 !Todas las contraseñas deben estar encriptadas
@@ -133,6 +138,7 @@ ip dhcp pool INTEGRA
 network 192.168.20.0 255.255.255.0
 default-router 192.168.20.1
 dns-server 192.168.30.2
+lease 0 12 0
 exit
 
 !DHCP .15
@@ -143,7 +149,8 @@ ip dhcp pool INTEGRA2
 
 network 192.168.25.0 255.255.255.0
 default-router 192.168.25.1
-dns-server 192.168.30.2
+dns-server 8.8.8.8
+lease 0 12 0
 
 
 !Save config

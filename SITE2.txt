@@ -1,6 +1,4 @@
-CONTEC123
 enable
-PRIVTEC123
 configure terminal
 
 hostname SITE2
@@ -21,10 +19,17 @@ password CONTEC123
 login
 exit
 
+ip domain-name BorregoAzul.com.mx
+crypto key generate rsa
+SITE2.BorregoAzul.com.mx
+1024
+username Admin privilege 15 secret REMTEC123
+
+
 !Contraseña para acceso remoto
 line vty 0 15
-password REMTEC123
-login
+transport input ssh
+login local
 exit
 
 !Todas las contraseñas deben estar encriptadas
@@ -82,53 +87,54 @@ access-list 101 permit ip any any
 
 interface Gig1/0/1
 no switchport
-ip address 192.168.100.1 255.255.255.252
-ip access-group 101 IN
+ip address 192.168.100.5 255.255.255.252
+ip access-group 101 in
 no shutdown
 exit
 
 interface Gig1/0/2
 no switchport
-ip address 192.168.100.9 255.255.255.252
-ip access-group 101 IN
+ip address 192.168.100.13 255.255.255.252
+ip access-group 101 in
 no shutdown
 exit
 
 !Checar si esto jala con la redundancia 
 interface Gig1/0/3
 no switchport
-ip address 192.168.100.17 255.255.255.252
+ip address 192.168.100.21 255.255.255.252
 ip access-group 101 in
 no shutdown
 exit
 
 interface Gig1/0/4
 no switchport
-ip address 192.168.100.25 255.255.255.252
-ip access-group 101 in
+ip address 192.168.100.29 255.255.255.252
+no ip access-group 101 in
 no shutdown
 exit
 
 interface Gig1/0/5
 no switchport
-ip address 192.168.100.33 255.255.255.252
-ip access-group 101 in
+ip address 192.168.100.37 255.255.255.252
+no ip access-group 101 in
 no shutdown
 exit
 
 interface Gig1/0/6
 no switchport
-ip address 192.168.100.41 255.255.255.252
+ip address 192.168.100.45 255.255.255.252
 ip access-group 101 in
 no shutdown
 exit
 
 interface Gig1/0/24
 no switchport
-ip address 192.168.100.49 255.255.255.248
-ip access-group 101 in
+ip address 192.168.100.50 255.255.255.248
+ip access-group 101 out
 no shutdown
 exit
+
 
 !Enable Routers
 ip routing

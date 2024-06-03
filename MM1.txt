@@ -1,6 +1,4 @@
-CONTEC123
 enable
-PRIVTEC123
 configure terminal
 
 hostname MM1
@@ -21,10 +19,17 @@ password CONTEC123
 login
 exit
 
+ip domain-name BorregoAzul.com.mx
+crypto key generate rsa
+MM1.BorregoAzul.com.mx
+1024
+username Admin privilege 15 secret REMTEC123
+
+
 !Contraseña para acceso remoto
 line vty 0 15
-password REMTEC123
-login
+transport input ssh
+login local
 exit
 
 !Todas las contraseñas deben estar encriptadas
@@ -68,6 +73,67 @@ vlan 100
 name Red
 exit
 
+
+!QoS
+!Prioridades:
+!Control y Automatizacion
+!Seguridad
+!Telemetria y Sensores
+!Administracion de la red
+!Datos Generales 
+!Configuracion de los ACLS
+access-list 101 permit ip any any dscp cs6
+access-list 102 permit ip any any dscp cs5
+access-list 103 permit ip any any dscp cs4
+access-list 104 permit ip any any dscp cs3
+access-list 105 permit ip any any
+
+!Creacion de las calse de tráfico
+class-map match-any ClaseControl
+ match access-group 101
+exit
+
+class-map match-any ClaseSeguridad
+ match access-group 102
+exit
+
+class-map match-any ClaseTelemetria
+ match access-group 103
+exit
+
+class-map match-any ClaseAdministracion
+ match access-group 104
+exit
+
+class-map match-any ClaseDatosGenerales
+ match access-group 105
+exit
+
+!Definicion de la políticas QoS
+policy-map PoliticaQoSIIoT
+ class ClaseControl
+  priority 3000
+  exit
+
+ class ClaseSeguridad
+  priority 2000
+  exit
+
+ class ClaseTelemetria
+  bandwidth 1500
+  exit
+
+ class ClaseAdministracion
+  bandwidth 1000
+exit
+
+ class ClaseDatosGenerales
+  bandwidth 500
+exit
+exit
+
+
+
 !Configure VLAN interface
 interface vlan 40
 ip address 192.168.40.1 255.255.255.0
@@ -96,6 +162,7 @@ interface Gig1/0/4
 switchport trunk encapsulation dot1q
 switchport mode trunk
 switchport trunk allowed vlan 10,15,20,25,30,40,45,50,55,60,65,100
+service-policy output PoliticaQoSIIoT
 no shutdown
 exit
 
@@ -133,6 +200,7 @@ ip dhcp pool INTEGRA
 network 192.168.40.0 255.255.255.0
 default-router 192.168.40.1
 dns-server 192.168.30.2
+lease 0 12 0
 exit
 
 !DHCP .45
@@ -144,6 +212,7 @@ ip dhcp pool INTEGRA2
 network 192.168.45.0 255.255.255.0
 default-router 192.168.45.1
 dns-server 192.168.30.2
+lease 0 12 0
 
 !Save config
 exit
